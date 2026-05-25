@@ -1,0 +1,1565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clubbed - Club Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-primary: #8a2be2;
+            --color-secondary: #00a2ff;
+            --color-bg-dark: #0a0014;
+            --color-card-bg: rgba(26, 11, 46, 0.4);
+            --color-text-light: #f3f3f3;
+            --color-border: rgba(138, 43, 226, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, sans-serif;
+            color: var(--color-text-light);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            background: black;
+            padding-top: 72px;
+        }
+
+        /* ---------- NAVBAR ---------- */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 4%;
+      z-index: 999;
+      background: linear-gradient(180deg, rgba(0,0,0,0.45), rgba(0,0,0,0.15));
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .nav-logo {
+      width: 46px;
+      height: 46px;
+      object-fit: contain;
+      border-radius: 8px;
+    }
+
+    .brand {
+      color: white;
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: 0.6px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 18px;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: rgba(220,220,220,0.9);
+      text-decoration: none;
+      font-weight: 500;
+      padding: 8px 10px;
+      border-radius: 8px;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      background: rgba(111,111,255,0.12);
+      color: white;
+    }
+
+    .nav-right {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .btn-login {
+      font-size: 0.95rem;
+      color: #dcdcff;
+      background: transparent;
+      border: 2px solid #6f6fff;
+      border-radius: 8px;
+      padding: 8px 14px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .btn-login:hover {
+      background: #6f6fff;
+      color: white;
+      box-shadow: 0 0 12px rgba(111,111,255,0.4);
+    }
+
+        .btn-logout {
+            font-size: 0.95rem;
+            color: #ffd7d7;
+            background: transparent;
+            border: 2px solid #d65252;
+            border-radius: 8px;
+            padding: 8px 14px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-decoration: none;
+        }
+
+        .btn-logout:hover {
+            background: #d65252;
+            color: white;
+            box-shadow: 0 0 12px rgba(214,82,82,0.45);
+        }
+
+    .hamburger {
+      display: none;
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.03);
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    /* Search Bar */
+    .nav-search {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin: 0 20px;
+    }
+
+    .nav-search input {
+      padding: 6px 12px;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.3);
+      background: rgba(255,255,255,0.05);
+      color: white;
+      outline: none;
+      transition: all 0.3s ease;
+      width: 180px;
+    }
+
+    .nav-search input::placeholder {
+      color: rgba(255,255,255,0.6);
+    }
+
+    .nav-search input:focus {
+      background: rgba(255,255,255,0.1);
+      border-color: #6f6fff;
+    }
+
+    .nav-search button {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      color: white;
+      font-size: 1rem;
+    }
+
+    
+
+    @media (max-width: 768px) {
+      .nav-search { display: none; }
+      .brand { display: none; }
+    }
+
+        .navbar-section {
+            position: relative;
+            z-index: 10;
+            padding: 40px 20px;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .page-title {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, #b388ff, #00e6ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .page-subtitle {
+            font-size: 1rem;
+            opacity: 0.8;
+            margin-top: 10px;
+        }
+
+        .clubs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .club-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.4s ease;
+            animation: fadeInUp 0.6s ease-out forwards;
+            opacity: 0;
+        }
+
+        .club-card:nth-child(1) { animation-delay: 0.1s; }
+        .club-card:nth-child(2) { animation-delay: 0.15s; }
+        .club-card:nth-child(3) { animation-delay: 0.2s; }
+        .club-card:nth-child(4) { animation-delay: 0.25s; }
+        .club-card:nth-child(5) { animation-delay: 0.3s; }
+        .club-card:nth-child(6) { animation-delay: 0.35s; }
+        .club-card:nth-child(7) { animation-delay: 0.4s; }
+        .club-card:nth-child(8) { animation-delay: 0.45s; }
+        .club-card:nth-child(9) { animation-delay: 0.5s; }
+        .club-card:nth-child(10) { animation-delay: 0.55s; }
+        .club-card:nth-child(11) { animation-delay: 0.6s; }
+        .club-card:nth-child(12) { animation-delay: 0.65s; }
+        .club-card:nth-child(13) { animation-delay: 0.7s; }
+        .club-card:nth-child(14) { animation-delay: 0.75s; }
+        .club-card:nth-child(15) { animation-delay: 0.8s; }
+        .club-card:nth-child(16) { animation-delay: 0.85s; }
+        .club-card:nth-child(17) { animation-delay: 0.9s; }
+        .club-card:nth-child(18) { animation-delay: 0.95s; }
+        .club-card:nth-child(19) { animation-delay: 1s; }
+        .club-card:nth-child(20) { animation-delay: 1.05s; }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .club-card:hover {
+            transform: translateY(-10px) scale(1.05);
+        }
+
+        .club-logo-wrapper {
+            width: 120px;
+            height: 120px;
+            margin-bottom: 15px;
+        }
+
+        .club-logo-circle {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.95);
+            border: 3px solid transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            box-shadow: 0 8px 32px rgba(138, 43, 226, 0.3);
+            padding: 5px;
+        }
+
+        /* .club-card:hover .club-logo-circle {
+            border-color: var(--color-secondary);
+            box-shadow: 0 0 30px var(--color-primary);
+            transform: rotate(360deg);
+        } */
+
+        .club-logo {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .club-name {
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-align: center;
+            text-transform: capitalize;
+            transition: color 0.3s ease;
+        }
+
+        .club-card:hover .club-name {
+            color: var(--color-secondary);
+            text-shadow: 0 0 10px var(--color-secondary);
+        }
+
+        /* ===== DASHBOARD SECTION ===== */
+        .dashboard-section {
+            display: none;
+            position: relative;
+            z-index: 10;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: calc(100vh - 72px);
+            flex: 1;
+        }
+
+        .dashboard-section.active {
+            display: flex; /* Changed from block to flex to ensure it fills space */
+            flex-direction: column;
+            animation: fadeIn 0.5s ease-in;
+            min-height: 100vh; /* Ensures it takes up at least the full screen */
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .dashboard-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .back-btn {
+            background: rgba(107, 33, 168, 0.85);
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            color: rgba(255, 255, 255, 0.95);
+            padding: 12px 30px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+        }
+
+        .back-btn:hover {
+            background: rgba(138, 43, 226, 0.95);
+            border-color: rgba(138, 43, 226, 0.6);
+            box-shadow: 0 8px 24px rgba(138, 43, 226, 0.3);
+        }
+
+        .club-title-header {
+            font-size: 1.8rem;
+            background: linear-gradient(90deg, #b388ff, #00e6ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* ===== BENTO GRID ===== */
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .bento-card {
+            background: var(--color-card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--color-border);
+            border-radius: 24px;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: space-between;
+            min-height: 200px;
+        }
+
+        .bento-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 24px;
+            padding: 1px;
+            background: linear-gradient(135deg, transparent, rgba(138, 43, 226, 0.3), transparent);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .bento-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(138, 43, 226, 0.5);
+            box-shadow: 0 20px 60px rgba(138, 43, 226, 0.2);
+        }
+
+        .bento-card:hover::before {
+            opacity: 1;
+        }
+
+        /* Card Sizes */
+        .bento-card.large {
+            grid-column: span 2;
+            grid-row: span 2;
+        }
+
+        .bento-card.wide {
+            grid-column: span 2;
+        }
+
+        .bento-card.tall {
+            grid-row: span 2;
+        }
+
+        .card-category {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--color-secondary);
+            opacity: 0.8;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .card-content {
+            flex-grow: 1;
+            width: 100%;
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            opacity: 0.4;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--color-text-light);
+            margin-bottom: 10px;
+            text-transform: capitalize;
+        }
+
+        .card-description {
+            font-size: 0.85rem;
+            opacity: 0.6;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .add-btn {
+            background: rgba(107, 33, 168, 0.85);
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            color: rgba(255, 255, 255, 0.95);
+            padding: 12px 28px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: auto;
+            backdrop-filter: blur(10px);
+        }
+
+        .add-btn:hover {
+            background: rgba(138, 43, 226, 0.95);
+            border-color: rgba(138, 43, 226, 0.6);
+            box-shadow: 0 8px 24px rgba(138, 43, 226, 0.3);
+        }
+
+        .edit-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.62);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1200;
+            padding: 20px;
+        }
+
+        .edit-modal-overlay.active {
+            display: flex;
+        }
+
+        .edit-modal {
+            width: min(520px, 95vw);
+            background: rgba(27, 15, 48, 0.85);
+            border: 1px solid rgba(138, 43, 226, 0.35);
+            border-radius: 16px;
+            padding: 22px;
+            backdrop-filter: blur(18px);
+            box-shadow: 0 18px 45px rgba(0, 0, 0, 0.45);
+        }
+
+        .edit-modal h3 {
+            margin-bottom: 14px;
+            font-size: 1.3rem;
+            color: #e9dcff;
+        }
+
+        .edit-modal input,
+        .edit-modal textarea {
+            width: 100%;
+            border: 1px solid rgba(138, 43, 226, 0.35);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.08);
+            color: white;
+            padding: 10px 12px;
+            margin-bottom: 12px;
+            outline: none;
+        }
+
+        .edit-modal textarea {
+            min-height: 110px;
+            resize: vertical;
+        }
+
+        .edit-modal-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .modal-btn {
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 8px;
+            padding: 9px 14px;
+            cursor: pointer;
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-btn.save {
+            background: linear-gradient(135deg, #00d4ff, #8a2be2);
+            border-color: rgba(0, 212, 255, 0.4);
+        }
+
+        .feature-list {
+            text-align: left;
+            margin-top: 15px;
+            opacity: 0.5;
+            font-size: 0.8rem;
+            list-style: none;
+        }
+
+        .feature-list li {
+            margin: 6px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .feature-list li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--color-secondary);
+            font-weight: bold;
+        }
+
+        /* Cursor Spotlight Effect */
+        .bento-card::after {
+            content: '';
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(138, 43, 226, 0.15) 0%, transparent 70%);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .bento-card:hover::after {
+            opacity: 1;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .bento-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .bento-card.large {
+                grid-column: span 2;
+                grid-row: span 1;
+            }
+        }
+
+        /* ---------- FOOTER ---------- */
+        .footer {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(15px);
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding: 40px 4%;
+            margin-top: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+
+        .footer-left {
+            flex: 1;
+        }
+
+        .footer-contacts {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .footer-contacts a {
+            color: #cfe3ff;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: color 0.3s ease, transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .footer-contacts a:hover {
+            color: #ff6ec7;
+            transform: translateY(-2px);
+        }
+
+        .footer-team {
+            color: rgba(255,255,255,0.9);
+            font-size: 1rem;
+            font-weight: 500;
+            flex: 1;
+            text-align: right;
+        }
+
+        @media (max-width: 768px) {
+            .footer {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .footer-left {
+                display: none;
+            }
+
+            .footer-contacts {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .footer-team {
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .bento-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .bento-card.large,
+            .bento-card.wide,
+            .bento-card.tall {
+                grid-column: span 1;
+                grid-row: span 1;
+            }
+
+            .clubs-grid {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            }
+
+            .card-icon {
+                font-size: 2rem;
+            }
+        }
+
+            /* gemini fix */
+    /* Unified Search Bar Fix */
+.nav-search {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin: 0 20px;
+  height: 100%; /* Ensures vertical alignment in the navbar */
+}
+
+.nav-search input {
+  /* Explicit sizing to override Tailwind defaults */
+  width: 180px;
+  height: 32px; 
+  padding: 0 12px; /* Vertical padding 0 to prevent stretching */
+  
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  background: rgba(255, 255, 255, 0.05);
+  color: white;
+  outline: none;
+  font-size: 0.85rem;
+  
+  /* Critical for cross-page consistency */
+  box-sizing: border-box !important;
+  line-height: 1.2 !important;
+  transition: all 0.3s ease;
+}
+
+.nav-search input:focus {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: #6f6fff !important;
+  width: 200px; /* Slight growth on focus */
+}
+
+.nav-search button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+}
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <!-- NAVBAR -->
+<header class="navbar" role="navigation" aria-label="Main navigation">
+  <div class="nav-left">
+    <img src="./rvu-logo.png" alt="RV logo" class="nav-logo">
+    <div class="brand">Clubs</div>
+  </div>
+
+  <div class="nav-search">
+    <input type="text" placeholder="Search..." />
+    <button aria-label="Search"></button>
+  </div>
+
+  <nav class="nav-links" aria-label="Primary">
+    <a href="./index.html" onclick="document.querySelector('.hero').scrollIntoView({behavior:'smooth'})">Home</a>
+    <a href="./clubs.html">Clubs</a>
+    <a href="./events.html">Events</a>
+    <a href="./announcements.html">Announcements</a>
+        <a href="./venue-booking.html">Venues</a>
+  </nav>
+
+  <div class="nav-right">
+  <a href="./login.html" class="btn-login">Login</a>
+  <a href="./signup.html" class="btn-login">Sign Up</a>
+    <a href="#" class="btn-logout" style="display: none;" onclick="handleLogout()">Logout</a>
+  <div class="hamburger" aria-hidden="true">
+    <svg width="18" height="14" viewBox="0 0 18 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect y="1" width="18" height="2" rx="1" fill="rgba(220,220,220,0.9)"/>
+      <rect y="6" width="18" height="2" rx="1" fill="rgba(220,220,220,0.9)"/>
+      <rect y="11" width="18" height="2" rx="1" fill="rgba(220,220,220,0.9)"/>
+    </svg>
+  </div>
+</div>
+</header>
+    <!-- CLUB NAVBAR -->
+    <div id="navbar-section" class="navbar-section">
+        <header class="page-header">
+            <h1 class="page-title">Clubbed</h1>
+            <p class="page-subtitle">Discover and join amazing clubs at RV University</p>
+        </header>
+        <div id="clubs-grid" class="clubs-grid"></div>
+    </div>
+
+    <div id="editModalOverlay" class="edit-modal-overlay">
+        <div class="edit-modal">
+            <h3 id="modalTitle">Edit</h3>
+            <input id="modalInput" type="text" placeholder="Enter heading or key detail">
+            <textarea id="modalTextarea" placeholder="Enter description"></textarea>
+            <div class="edit-modal-actions">
+                <button id="modalCancelBtn" class="modal-btn" type="button">Cancel</button>
+                <button id="modalSaveBtn" class="modal-btn save" type="button">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CLUB DASHBOARD -->
+    <div id="dashboard-section" class="dashboard-section">
+        <div class="dashboard-header">
+            <button class="back-btn" onclick="showNavbar()">← Back to Clubs</button>
+            <h2 class="club-title-header" id="current-club-name"></h2>
+        </div>
+
+        <div class="bento-grid">
+            
+            <!-- 1. CLUB PROFILE CARD -->
+            <div class="bento-card large">
+                <span class="card-category">Essential</span>
+                <div class="card-content">
+                    <div class="card-icon">🏆</div>
+                    <h3 class="card-title">Club Profile</h3>
+                    <p class="card-description">Upload your club logo, set tagline, add social media links</p>
+                    <ul class="feature-list">
+                        <li>Club Logo</li>
+                        <li>Club Name & Tagline</li>
+                        <li>Instagram, WhatsApp Links</li>
+                        <li>Contact Email</li>
+                    </ul>
+                </div>
+                <button class="add-btn">
+                    <span>➕</span> Setup Profile
+                </button>
+            </div>
+
+            <!-- 2. PRESIDENT CARD -->
+            <div class="bento-card">
+                <span class="card-category">Leadership</span>
+                <div class="card-content">
+                    <div class="card-icon">👑</div>
+                    <h3 class="card-title">President</h3>
+                    <p class="card-description">Add president details</p>
+                </div>
+                <button class="add-btn">
+                    <span>➕</span> Add President
+                </button>
+            </div>
+
+            <!-- 3. ABOUT US -->
+            <div class="bento-card">
+                <span class="card-category">Info</span>
+                <div class="card-content">
+                    <div class="card-icon">📖</div>
+                    <h3 class="card-title">About Us</h3>
+                    <p class="card-description">Club mission & vision</p>
+                </div>
+                <button class="add-btn">
+                    <span>➕</span> Add Description
+                </button>
+            </div>
+
+            <!-- 4. CORE TEAM -->
+            <div class="bento-card tall">
+                <span class="card-category">Team</span>
+                <div class="card-content">
+                    <div class="card-icon">👥</div>
+                    <h3 class="card-title">Core Team</h3>
+                    <p class="card-description">Add all team members by domain</p>
+                    <ul class="feature-list">
+                        <li>Tech Leads</li>
+                        <li>Design Team</li>
+                        <li>PR & Outreach</li>
+                        <li>Content Team</li>
+                        <li>Event Management</li>
+                    </ul>
+                </div>
+                <button class="add-btn">
+                    <span>➕</span> Add Members
+                </button>
+            </div>
+
+            <!-- 5. UPCOMING EVENTS -->
+            <div class="bento-card wide">
+                <span class="card-category">Events</span>
+                <div class="card-content">
+                    <div class="card-icon">📅</div>
+                    <h3 class="card-title">Upcoming Events</h3>
+                    <p class="card-description">Add workshops, competitions, meetups</p>
+                    <ul class="feature-list">
+                        <li>Event Name, Date & Time</li>
+                        <li>Event Poster</li>
+                        <li>Registration Link</li>
+                    </ul>
+                </div>
+                <button class="add-btn">
+                    <span>➕</span> Add Event
+                </button>
+            </div>
+
+            <!-- 6. PAST EVENTS -->
+            <div class="bento-card">
+                <span class="card-category">Archive</span>
+                <div class="card-content">
+                    <div class="card-icon">🎉</div>
+                    <h3 class="card-title">Past Events</h3>
+                    <p class="card-description">Showcase completed events</p>
+                </div>
+                <button class="add-btn">
+                    <span>➕</span> Add Past Event
+                </button>
+            </div>
+
+            <!-- 7. EVENT RECORDS -->
+            <div class="bento-card">
+                <span class="card-category">Records</span>
+                <div class="card-content">
+                    <div class="card-icon">📋</div>
+                    <h3 class="card-title">Track Your Events</h3>
+                    <p class="card-description">Maintain complete event records</p>
+                </div>
+                <button class="add-btn">
+                    <span>➕</span> Add Record
+                </button>
+                <button class="add-btn" style="margin-top: 10px; background: linear-gradient(135deg, #00d4ff, #8a2be2);">
+                    <span>👁️</span> View Records
+                </button>
+            </div>
+
+            <!-- 8. REELS & MEDIA -->
+            <div class="bento-card tall">
+                <span class="card-category">Media</span>
+                <div class="card-content">
+                    <div class="card-icon">🎬</div>
+                    <h3 class="card-title">Reels & Media</h3>
+                    <p class="card-description">Upload Instagram reels, YouTube videos</p>
+                    <ul class="feature-list">
+                        <li>Instagram Reel Links</li>
+                        <li>YouTube Videos</li>
+                        <li>Event Highlights</li>
+                    </ul>
+                </div>
+                <button class="add-btn">
+                    <span>➕</span> Add Reel
+                </button>
+            </div>
+
+            <!-- 9. ANNOUNCEMENTS -->
+            <div class="bento-card wide">
+                <span class="card-category">Updates</span>
+                <div class="card-content">
+                    <div class="card-icon">📢</div>
+                    <h3 class="card-title">Announcements</h3>
+                    <p class="card-description">Post updates, recruitment, news</p>
+                </div>
+                <button class="add-btn">
+                    <span>➕</span> Post Announcement
+                </button>
+            </div>
+
+            <!-- 10. ACHIEVEMENTS -->
+            <div class="bento-card">
+                <span class="card-category">Recognition</span>
+                <div class="card-content">
+                    <div class="card-icon">🏅</div>
+                    <h3 class="card-title">Achievements</h3>
+                    <p class="card-description">Showcase awards & wins</p>
+                </div>
+                <button class="add-btn">
+                    <span>➕</span> Add Achievement
+                </button>
+            </div>
+
+            <!-- 11. HIRING/RECRUITMENT -->
+            <div class="bento-card">
+                <span class="card-category">Opportunities</span>
+                <div class="card-content">
+                    <div class="card-icon">💼</div>
+                    <h3 class="card-title">Hiring</h3>
+                    <p class="card-description">Open positions & recruitment</p>
+                </div>
+                <button class="add-btn">
+                    <span>➕</span> Post Opening
+                </button>
+            </div>
+
+            <!-- 12. GALLERY -->
+            <div class="bento-card wide">
+                <span class="card-category">Memories</span>
+                <div class="card-content">
+                    <div class="card-icon">🖼️</div>
+                    <h3 class="card-title">Photo Gallery</h3>
+                    <p class="card-description">Club photos & memories</p>
+                </div>
+                <button class="add-btn">
+                    <span>➕</span> Upload Photos
+                </button>
+            </div>
+
+            <!-- 13. CONTACT INFO -->
+            <div class="bento-card">
+                <span class="card-category">Connect</span>
+                <div class="card-content">
+                    <div class="card-icon">📞</div>
+                    <h3 class="card-title">Contact</h3>
+                    <p class="card-description">Email, phone, location</p>
+                </div>
+                <button class="add-btn">
+                    <span>➕</span> Add Contact
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:3000/api';
+        let activeDashboardClubName = '';
+        let selectedCardForEdit = null;
+
+        function normalizeClubName(value) {
+            return (value || '')
+                .toLowerCase()
+                .replace(/\.rvu\b/g, '')
+                .replace(/[^a-z0-9]/g, '');
+        }
+
+        const clubLogos = [
+            { name: "HAPPY TAILS", src: "https://github.com/nandini973/CLUB-IMAGES/blob/main/happy%20tails.jpg?raw=true" },
+            { name: "expression_rvu", src:" https://github.com/nandini973/CLUB-IMAGES/blob/main/expressions.jpg?raw=true" },
+            { name: "thevibetribe rvu", src: "https://github.com/nandini973/CLUB-IMAGES/blob/main/VIBE%20TRIBE%202.jpg?raw=true"},
+            { name: "tifa rvu", src: "https://github.com/nandini973/CLUB-IMAGES/blob/main/tifa.jpg?raw=true"},
+            { name: "finger grow rvu", src: "https://github.com/nandini973/CLUB-IMAGES/blob/main/finger.jpg?raw=true" },
+            { name: "cpature.rvu", src: "https://github.com/nandini973/CLUB-IMAGES/blob/main/capture.jpg?raw=true" },
+            { name: "art of travel", src: "https://github.com/nandini973/CLUB-IMAGES/blob/main/art%20of%20travel.jpg?raw=true" },
+            { name: "natyarangam.rvu", src: "https://github.com/nandini973/CLUB-IMAGES/blob/main/natya.jpg?raw=true" },
+            { name: "legacy rvu", src: "https://github.com/nandini973/CLUB-IMAGES/blob/main/legacy.jpg?raw=true"},
+            { name: "openmike.rvu", src: "https://github.com/nandini973/CLUB-IMAGES/blob/main/open%20mike.jpg?raw=true" },
+
+            { name: "solas rvu", src: "https://github.com/nandini973/CLUB-IMAGES/blob/main/solas.jpg?raw=true" },
+            { name: "ameya.rvu", src: "https://github.com/nandini973/CLUB-IMAGES/blob/main/ameya.jpg?raw=true" },
+            { name: "viksha .rvu", src: "https://github.com/nandini973/CLUB-IMAGES/blob/main/viksha.jpg?raw=true" },
+            { name: "shrigandha.rvu", src: "https://github.com/nandini973/CLUB-IMAGES/blob/main/shrignadha.jpg?raw=true" },
+            { name: "chronicoobserves", src: "https://github.com/nandini973/CLUB-IMAGES/blob/main/chronico.jpg?raw=true" },
+            { name: "cybersec.rvu", src: "https://github.com/nandini973/CLUB-IMAGES/blob/main/cybersec.jpg?raw=true" },
+            { name: "chiptech.rvu", src: "https://github.com/nandini973/CLUB-IMAGES/blob/main/chip%20tech.jpg?raw=true" },
+            { name: "gdg.rvu", src: "https://github.com/nandini973/CLUB-IMAGES/blob/main/gdg.jpg?raw=true"},
+            { name: "threads .rvu", src: "https://github.com/nandini973/CLUB-IMAGES/blob/main/threads.jpg?raw=true" }
+        ];
+
+        const clubSeedDetails = {
+            happytails: {
+                tagline: 'Compassion through campus animal care',
+                president: 'Aadya N',
+                about: 'Happy Tails works on feeding drives, adoption support, and awareness for street animals near campus.',
+                focus: 'Animal welfare, rescue coordination, volunteer outreach',
+                flagship: 'Monthly feeding map drive and adoption camp'
+            },
+            expressionrvu: {
+                tagline: 'Storytelling through stage and speech',
+                president: 'Rohan K',
+                about: 'Expression organizes spoken word circles, drama showcases, and communication workshops.',
+                focus: 'Theatre, public speaking, creative expression',
+                flagship: 'Open expression night and inter-college stage showcase'
+            },
+            thevibetribervu: {
+                tagline: 'Campus lifestyle and pop-culture community',
+                president: 'Ishita M',
+                about: 'The Vibe Tribe curates social mixers, trend talks, and collaborative student culture projects.',
+                focus: 'Community building, social engagement, culture',
+                flagship: 'Semester kick-off mixer and vibe sessions'
+            },
+            tifarvu: {
+                tagline: 'Finance and investment for students',
+                president: 'Arjun P',
+                about: 'TIFA introduces students to personal finance, market basics, and case-based investment thinking.',
+                focus: 'Finance literacy, stock market basics, analysis',
+                flagship: 'Weekly market decode and finance quiz'
+            },
+            fingergrowrvu: {
+                tagline: 'Sustainable gardening and green initiatives',
+                president: 'Nithya R',
+                about: 'Finger Grow leads plantation drives and sustainable gardening projects in and around campus.',
+                focus: 'Urban gardening, sustainability, eco projects',
+                flagship: 'Adopt-a-plant and green campus challenge'
+            },
+            cpaturervu: {
+                tagline: 'Photography and visual storytelling',
+                president: 'Kavin S',
+                about: 'Capture Club trains students in photography basics, photo walks, and storytelling through frames.',
+                focus: 'Photography, editing workflows, portfolios',
+                flagship: 'Photo walk series and annual photo zine'
+            },
+            artoftravel: {
+                tagline: 'Travel stories, planning, and exploration',
+                president: 'Megha T',
+                about: 'Art of Travel documents travel experiences and helps students plan meaningful low-budget trips.',
+                focus: 'Travel planning, vlogging, cultural exchange',
+                flagship: 'Travel talk circle and itinerary challenge'
+            },
+            natyarangamrvu: {
+                tagline: 'Dance, movement, and performance art',
+                president: 'Pranav V',
+                about: 'Natyarangam celebrates classical and contemporary dance through workshops and stage events.',
+                focus: 'Choreography, dance training, performances',
+                flagship: 'Campus choreography league and dance jam'
+            },
+            legacyrvu: {
+                tagline: 'History, heritage, and cultural memory',
+                president: 'Devika S',
+                about: 'Legacy Club explores heritage narratives through talks, exhibits, and student-led documentation.',
+                focus: 'Heritage studies, curation, archives',
+                flagship: 'Heritage week and oral history project'
+            },
+            openmikervu: {
+                tagline: 'Live mic for poetry, music, and stand-up',
+                president: 'Naman B',
+                about: 'Open Mike provides a safe stage for artists to perform and test original material.',
+                focus: 'Live performance, writing, stage confidence',
+                flagship: 'Fortnightly open mic and spotlight set'
+            },
+            solasrvu: {
+                tagline: 'Well-being and mindful student life',
+                president: 'Aishwarya L',
+                about: 'Solas hosts peer wellness circles, mindfulness sessions, and stress-management activities.',
+                focus: 'Well-being, mindfulness, peer support',
+                flagship: 'Mindful Mondays and calm campus hour'
+            },
+            ameyarvu: {
+                tagline: 'Literary and language arts collective',
+                president: 'Harsha D',
+                about: 'Ameya promotes reading, writing, and multilingual creativity through clubs and publishing.',
+                focus: 'Literature, writing, language exchange',
+                flagship: 'Writers room and short story anthology'
+            },
+            viksharvu: {
+                tagline: 'Social impact and volunteer action',
+                president: 'Sanjana G',
+                about: 'Viksha plans volunteering campaigns that connect students with local community initiatives.',
+                focus: 'Community service, drives, outreach',
+                flagship: 'Impact weekend and volunteer partnerships'
+            },
+            shrigandharvu: {
+                tagline: 'Kannada culture and performing arts',
+                president: 'Tejas H',
+                about: 'Shrigandha celebrates Kannada language, folk traditions, and regional performing arts.',
+                focus: 'Language, culture, folk art',
+                flagship: 'Samskruti showcase and folklore evenings'
+            },
+            chronicoobserves: {
+                tagline: 'Campus journalism and media observation',
+                president: 'Ritika J',
+                about: 'Chronico Observes covers student stories, opinion pieces, and media reporting practice.',
+                focus: 'Journalism, editing, campus reporting',
+                flagship: 'Weekly campus bulletin and feature desk'
+            },
+            cybersecrvu: {
+                tagline: 'Cybersecurity learning and practice',
+                president: 'Sai N',
+                about: 'CyberSec runs beginner-friendly workshops on security fundamentals and ethical hacking basics.',
+                focus: 'Security awareness, CTF practice, blue team basics',
+                flagship: 'Capture the flag bootcamp and security clinic'
+            },
+            chiptechrvu: {
+                tagline: 'Hardware, IoT, and embedded innovation',
+                president: 'Vihan C',
+                about: 'ChipTech builds practical electronics projects and bridges software with hardware systems.',
+                focus: 'Embedded systems, IoT, prototyping',
+                flagship: 'Build sprint and device demo day'
+            },
+            gdgrvu: {
+                tagline: 'Developer community powered by Google tech',
+                president: 'Priya R',
+                about: 'GDG RVU hosts coding sessions, solution challenges, and app development mentorship.',
+                focus: 'Web, mobile, cloud, developer skills',
+                flagship: 'Solution challenge prep and devfest campus edition'
+            },
+            threadsrvu: {
+                tagline: 'Fashion, design, and creative styling',
+                president: 'Moksha A',
+                about: 'Threads explores fashion communication, styling, and design-led creative showcases.',
+                focus: 'Styling, fashion design, brand expression',
+                flagship: 'Style lab and themed lookbook showcase'
+            }
+        };
+
+        function getClubSeedDetail(clubName) {
+            const key = normalizeClubName(clubName);
+            if (clubSeedDetails[key]) {
+                return clubSeedDetails[key];
+            }
+
+            return {
+                tagline: 'Student-led community building and skill growth',
+                president: 'Club President',
+                about: 'This club drives student collaboration through events, workshops, and hands-on activities.',
+                focus: 'Community, creativity, and practical learning',
+                flagship: 'Monthly signature event and collaboration projects'
+            };
+        }
+
+        function applySeedContentToCards(clubName) {
+            const detail = getClubSeedDetail(clubName);
+            const cards = document.querySelectorAll('.bento-grid .bento-card');
+            if (!cards || cards.length < 13) {
+                return;
+            }
+
+            const setDescription = (index, text) => {
+                const node = cards[index].querySelector('.card-description');
+                if (node) {
+                    node.textContent = text;
+                }
+            };
+
+            const setFeatures = (index, items) => {
+                let list = cards[index].querySelector('.feature-list');
+                if (!list) {
+                    list = document.createElement('ul');
+                    list.className = 'feature-list';
+                    cards[index].querySelector('.card-content').appendChild(list);
+                }
+
+                list.innerHTML = items.map((item) => `<li>${item}</li>`).join('');
+            };
+
+            const normalizeForEmail = normalizeClubName(clubName) || 'club';
+            const emailAlias = `${normalizeForEmail}@rvu.edu.in`;
+
+            setDescription(0, `${detail.tagline}. ${detail.about}`);
+            setFeatures(0, [
+                `President: ${detail.president}`,
+                `Focus: ${detail.focus}`,
+                `Contact: ${emailAlias}`,
+                `Signature: ${detail.flagship}`
+            ]);
+
+            setDescription(1, `Current lead: ${detail.president}. Oversees planning, team coordination, and club direction.`);
+            setDescription(2, detail.about);
+            setDescription(3, `Core domains include ${detail.focus}. Team meets every Friday, 4:30 PM in Student Activity Block.`);
+            setDescription(4, `Next highlight: ${detail.flagship}. Registrations open through Clubbed announcements.`);
+            setDescription(5, 'Past activities are archived with key outcomes, participation numbers, and media highlights.');
+            setDescription(6, 'Track approvals, venue bookings, and post-event reports in one place for smooth operations.');
+            setDescription(7, 'Media folder includes event snippets, poster creatives, and social-ready reels from recent activities.');
+            setDescription(8, 'Use announcements for recruitments, event updates, and collaboration calls across departments.');
+            setDescription(9, 'Highlight competition wins, external recognitions, and milestone achievements of members.');
+            setDescription(10, 'Open positions are posted at the start of each month with role expectations and timelines.');
+            setDescription(11, 'Gallery showcases the best moments from workshops, stage events, and community drives.');
+            setDescription(12, `Mail: ${emailAlias} | Office hours: Tue/Thu 1:30 PM - 3:00 PM | Activity Block, RVU.`);
+        }
+
+        // Initialize clubs grid
+        function initClubsGrid() {
+            const grid = document.getElementById('clubs-grid');
+            clubLogos.forEach((club) => {
+                const card = document.createElement('div');
+                card.className = 'club-card';
+                card.innerHTML = `
+                    <div class="club-logo-wrapper">
+                        <div class="club-logo-circle">
+                            <img src="${club.src}" alt="${club.name}" class="club-logo">
+                        </div>
+                    </div>
+                    <div class="club-name">${club.name}</div>
+                `;
+                card.onclick = () => showDashboard(club.name);
+                grid.appendChild(card);
+            });
+        }
+
+        // Show dashboard
+        function showDashboard(clubName) {
+            document.getElementById('navbar-section').style.display = 'none';
+            document.getElementById('dashboard-section').classList.add('active');
+            document.getElementById('current-club-name').textContent = clubName;
+            activeDashboardClubName = clubName;
+
+            applySeedContentToCards(clubName);
+
+            let loggedInUser = null;
+            try {
+                loggedInUser = JSON.parse(localStorage.getItem('user'));
+            } catch (error) {
+                loggedInUser = null;
+            }
+
+            const addButtons = document.querySelectorAll('.bento-card .add-btn');
+            addButtons.forEach((btn) => {
+                btn.style.display = 'none';
+            });
+
+            const canManage =
+                loggedInUser &&
+                (loggedInUser.role === 'admin' ||
+                    (loggedInUser.role === 'president' &&
+                        typeof loggedInUser.clubName === 'string' &&
+                        normalizeClubName(loggedInUser.clubName) === normalizeClubName(clubName)));
+
+            if (canManage) {
+                addButtons.forEach((btn) => {
+                    btn.style.display = 'inline-flex';
+                });
+            }
+            
+            // Fix: Force background to recalculate height
+            window.dispatchEvent(new Event('resize'));
+            window.scrollTo(0, 0);
+        }
+
+        // Show navbar
+        function showNavbar() {
+            document.getElementById('navbar-section').style.display = 'block';
+            document.getElementById('dashboard-section').classList.remove('active');
+            
+            // Fix: Force background to recalculate height
+            window.dispatchEvent(new Event('resize'));
+        }
+
+        // Cursor spotlight effect on cards
+        document.addEventListener('DOMContentLoaded', () => {
+            initClubsGrid();
+
+            const modalOverlay = document.getElementById('editModalOverlay');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalInput = document.getElementById('modalInput');
+            const modalTextarea = document.getElementById('modalTextarea');
+            const modalCancelBtn = document.getElementById('modalCancelBtn');
+            const modalSaveBtn = document.getElementById('modalSaveBtn');
+
+            function showToast(message, type = 'success') {
+                const existingToast = document.getElementById('clubs-toast');
+                if (existingToast) {
+                    existingToast.remove();
+                }
+
+                const toast = document.createElement('div');
+                toast.id = 'clubs-toast';
+                toast.textContent = message;
+                const bgColor = type === 'error' ? '#e53935' : '#4caf50';
+                toast.style.cssText = `position:fixed; top:80px; left:50%; transform:translateX(-50%); background:${bgColor}; color:white; padding:12px 22px; border-radius:8px; z-index:1300; box-shadow:0 4px 12px rgba(0,0,0,0.3); font-weight:600;`;
+                document.body.appendChild(toast);
+
+                setTimeout(() => {
+                    toast.remove();
+                }, 1300);
+            }
+
+            document.querySelectorAll('.bento-card .add-btn').forEach((btn) => {
+                btn.addEventListener('click', () => {
+                    const card = btn.closest('.bento-card');
+                    selectedCardForEdit = card;
+                    const title = card ? card.querySelector('.card-title') : null;
+                    modalTitle.textContent = title ? title.textContent.trim() : 'Edit';
+                    modalInput.value = title ? title.textContent.trim() : '';
+                    const description = card ? card.querySelector('.card-description') : null;
+                    modalTextarea.value = description ? description.textContent.trim() : '';
+                    modalOverlay.classList.add('active');
+                });
+            });
+
+            modalCancelBtn.addEventListener('click', () => {
+                modalOverlay.classList.remove('active');
+                selectedCardForEdit = null;
+            });
+
+            modalSaveBtn.addEventListener('click', async () => {
+                const loggedInUser = JSON.parse(localStorage.getItem('user') || 'null');
+                if (!loggedInUser || !loggedInUser.id || !activeDashboardClubName || !selectedCardForEdit) {
+                    showToast('Unable to save. Missing club or user session.', 'error');
+                    return;
+                }
+
+                const sectionTitle = (modalTitle.textContent || '').trim();
+                const headline = (modalInput.value || '').trim();
+                const description = (modalTextarea.value || '').trim();
+
+                try {
+                    const response = await fetch(`${API_URL}/clubs/${encodeURIComponent(activeDashboardClubName)}/content`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            userId: loggedInUser.id,
+                            sectionTitle,
+                            headline,
+                            description
+                        })
+                    });
+
+                    const rawBody = await response.text();
+                    let data = {};
+                    try {
+                        data = rawBody ? JSON.parse(rawBody) : {};
+                    } catch (error) {
+                        data = { message: rawBody || 'Update failed' };
+                    }
+
+                    if (!response.ok || !data.success) {
+                        showToast(data.message || 'Update failed', 'error');
+                        return;
+                    }
+
+                    const descriptionNode = selectedCardForEdit.querySelector('.card-description');
+                    if (descriptionNode) {
+                        descriptionNode.textContent = description || headline || descriptionNode.textContent;
+                    }
+
+                    modalOverlay.classList.remove('active');
+                    selectedCardForEdit = null;
+                    showToast('Successfully updated!');
+                } catch (error) {
+                    showToast('Server error while saving', 'error');
+                }
+            });
+
+            modalOverlay.addEventListener('click', (event) => {
+                if (event.target === modalOverlay) {
+                    modalOverlay.classList.remove('active');
+                    selectedCardForEdit = null;
+                }
+            });
+
+            modalInput.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    modalSaveBtn.click();
+                }
+            });
+
+            modalTextarea.addEventListener('keydown', (event) => {
+                if ((event.ctrlKey || event.metaKey) && event.key === 'Enter') {
+                    event.preventDefault();
+                    modalSaveBtn.click();
+                }
+            });
+
+            const cards = document.querySelectorAll('.bento-card');
+            cards.forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    card.style.setProperty('--mouse-x', `${x}px`);
+                    card.style.setProperty('--mouse-y', `${y}px`);
+                    
+                    const spotlight = card.querySelector('::after');
+                    if (spotlight) {
+                        card.style.setProperty('--spotlight-x', `${x}px`);
+                        card.style.setProperty('--spotlight-y', `${y}px`);
+                    }
+                });
+            });
+        });
+    </script>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-left"></div>
+        <div class="footer-contacts">
+            <p>© 2026 Clubbed | ASED DevOps Project | RV University</p>
+        </div>
+        <div class="footer-team">
+            
+        </div>
+    </footer>
+
+    <!-- VANTA.WAVES Background -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta/dist/vanta.waves.min.js"></script>
+    <script>
+        VANTA.WAVES({
+            el: "body",
+            mouseControls: true,
+            touchControls: true,
+            gyroControls: false,
+            minHeight: 200.00,
+            minWidth: 200.00,
+            scale: 1.00,
+            scaleMobile: 1.00,
+            color: 0x0a0520,
+            shininess: 20.00,
+            waveHeight: 20.00,
+            waveSpeed: 0.80,
+            zoom: 0.75
+        });
+    </script>
+    <script>
+        function handleLogout() {
+            const existingToast = document.getElementById('logout-toast');
+            if (existingToast) {
+                existingToast.remove();
+            }
+
+            const msg = document.createElement('div');
+            msg.id = 'logout-toast';
+            msg.textContent = 'Successfully logged out!';
+            msg.style.cssText = 'position:fixed; top:80px; left:50%; transform:translateX(-50%); background:#4caf50; color:white; padding:12px 24px; border-radius:8px; z-index:9999; box-shadow:0 4px 12px rgba(0,0,0,0.3); font-weight:600;';
+            document.body.appendChild(msg);
+
+            setTimeout(() => {
+                localStorage.removeItem('user');
+                window.location.href = 'index.html';
+            }, 1200);
+        }
+
+        (function applyAuthUiState() {
+            let user = null;
+            try {
+                user = JSON.parse(localStorage.getItem('user'));
+            } catch (error) {
+                user = null;
+            }
+
+            const loginButtons = document.querySelectorAll('.btn-login');
+            const logoutButtons = document.querySelectorAll('.btn-logout');
+
+            if (user) {
+                loginButtons.forEach((btn) => {
+                    btn.style.display = 'none';
+                });
+                logoutButtons.forEach((btn) => {
+                    btn.style.display = 'inline-block';
+                });
+            } else {
+                loginButtons.forEach((btn) => {
+                    btn.style.display = 'inline-block';
+                });
+                logoutButtons.forEach((btn) => {
+                    btn.style.display = 'none';
+                });
+            }
+
+            if (!user || user.role === 'user') {
+                document
+                    .querySelectorAll('a[href="./venue-booking.html"], a[href="venue-booking.html"]')
+                    .forEach((link) => {
+                        link.style.display = 'none';
+                    });
+            }
+        })();
+    </script>
+</body>
+</html>

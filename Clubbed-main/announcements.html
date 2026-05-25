@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en" class="dark" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clubbed | Announcements</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.10.2/dist/cdn.min.js" defer></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+   
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow-x: hidden;
+      background: #000;
+    }
+
+     body {
+      color: white;
+      min-height: 100vh;
+      position: relative;
+      font-family: sans-serif;
+      padding-top: 64px; /* Essential to prevent content from hiding under navbar */
+    }
+
+    body {
+  background: #000000;
+  color: white;
+  font-family: system-ui, -apple-system, sans-serif; /* Match index.html */
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding-top: 64px; /* The exact height of your navbar */
+  margin: 0;
+}
+
+   
+    /* VANTA Background - Absolute positioned behind everything */
+    #vanta-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 1;
+      display: block;
+    }
+   
+    /* Main Content Wrapper */
+    .main-wrapper {
+      position: relative;
+      z-index: 100;
+      min-height: 100vh;
+    }
+   
+    .event-card {
+      border: 1px solid rgba(111,111,255,0.3);
+      transition: all 0.3s ease;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+   
+    .event-card:hover {
+      transform: translateY(-8px);
+      /* Refined purple glow without changing background */
+      box-shadow: 0 12px 32px rgba(123,47,247,0.35), 0 0 0 6px rgba(111,111,255,0.10);
+      border-color: rgba(111,111,255,0.4);
+    }
+   
+    
+   
+   
+    .search-input, .filter-select {
+      background: rgba(10, 12, 25, 0.6) !important; /* darker, transparent */
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.16);
+      color: #e5e7eb;
+      transition: all 0.25s ease;
+    }
+
+    .filter-select:hover {
+      border-color: #6f6fff;
+      box-shadow: 0 0 0 6px rgba(111,111,255,0.10);
+      background: rgba(16, 18, 32, 0.7) !important;
+    }
+
+    .filter-select:focus {
+      border-color: #6f6fff !important;
+      outline: none;
+      box-shadow: 0 0 0 8px rgba(111,111,255,0.12);
+      background: rgba(18, 20, 36, 0.75) !important;
+    }
+
+    .search-input::placeholder {
+      color: rgba(255,255,255,0.55);
+    }
+
+    .search-input:focus {
+      border-color: #6f6fff !important;
+      background: rgba(18, 20, 36, 0.75) !important;
+      box-shadow: 0 0 0 6px rgba(111,111,255,0.10);
+      outline: none;
+    }
+
+    /* Gradient page title to match index feel */
+    .page-title {
+      background: linear-gradient(90deg, #b388ff, #00e6ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+   
+    .footer {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(15px);
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding: 40px 4%;
+      margin-top: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 30px;
+    }
+
+    .footer-left {
+      flex: 1;
+    }
+
+    .footer-contacts {
+      display: flex;
+      gap: 30px;
+      align-items: center;
+      flex: 1;
+      justify-content: center;
+    }
+
+    .footer-contacts a {
+      color: #cfe3ff;
+      text-decoration: none;
+      font-size: 1rem;
+      font-weight: 500;
+      transition: color 0.3s ease, transform 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .footer-contacts a:hover {
+      color: #ff6ec7;
+      transform: translateY(-2px);
+    }
+
+    .footer-team {
+      color: rgba(255,255,255,0.9);
+      font-size: 1rem;
+      font-weight: 500;
+      flex: 1;
+      text-align: right;
+    }
+
+    @media (max-width: 768px) {
+      .footer {
+        flex-direction: column;
+        text-align: center;
+      }
+      
+      .footer-left {
+        display: none;
+      }
+
+      .footer-contacts {
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .footer-team {
+        text-align: center;
+      }
+    }
+
+    /* ---------- NAVBAR (Exact Copy from Index.html) ---------- */
+.navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 4%;
+      z-index: 999;
+      background: linear-gradient(180deg, rgba(0,0,0,0.45), rgba(0,0,0,0.15));
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+ 
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .nav-logo {
+      width: 46px;
+      height: 46px;
+      object-fit: contain;
+      border-radius: 8px;
+    }
+
+    .brand {
+      color: white;
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: 0.6px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 18px;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: rgba(220,220,220,0.9);
+      text-decoration: none;
+      font-weight: 500;
+      padding: 8px 10px;
+      border-radius: 8px;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      background: rgba(111,111,255,0.12);
+      color: white;
+    }
+
+    .nav-right {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .btn-login {
+      font-size: 0.95rem;
+      color: #dcdcff;
+      background: transparent;
+      border: 2px solid #6f6fff;
+      border-radius: 8px;
+      padding: 8px 14px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .btn-login:hover {
+      background: #6f6fff;
+      color: white;
+      box-shadow: 0 0 12px rgba(111,111,255,0.4);
+    }
+
+    .btn-logout {
+      font-size: 0.95rem;
+      color: #ffd7d7;
+      background: transparent;
+      border: 2px solid #d65252;
+      border-radius: 8px;
+      padding: 8px 14px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      text-decoration: none;
+    }
+
+    .btn-logout:hover {
+      background: #d65252;
+      color: white;
+      box-shadow: 0 0 12px rgba(214,82,82,0.45);
+    }
+
+    .hamburger {
+      display: none;
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.03);
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    /* Search Bar */
+    .nav-search {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin: 0 20px;
+    }
+
+    .nav-search input {
+      padding: 6px 12px;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.3);
+      background: rgba(255,255,255,0.05);
+      color: white;
+      outline: none;
+      transition: all 0.3s ease;
+      width: 180px;
+    }
+
+    .nav-search input::placeholder {
+      color: rgba(255,255,255,0.6);
+    }
+
+    .nav-search input:focus {
+      background: rgba(255,255,255,0.1);
+      border-color: #6f6fff;
+    }
+
+    .nav-search button {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      color: white;
+      font-size: 1rem;
+    }
+
+    @media (max-width: 768px) {
+      .nav-search { display: none; }
+      .brand { display: none; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+    }
+
+
+
+    
+  </style>
+</head>
+<body>
+<!-- VANTA.WAVES Background -->
+<div id="vanta-bg"></div>
+<!-- NAVBAR -->
+<header class="navbar" role="navigation" aria-label="Main navigation">
+  <div class="nav-left">
+    <img src="./rvu-logo.png" alt="RV logo" class="nav-logo">
+    <div class="brand">Clubbed</div>
+  </div>
+
+  <div class="nav-search">
+    <input type="text" placeholder="Search..." />
+    <button aria-label="Search"></button>
+  </div>
+
+  <nav class="nav-links" aria-label="Primary">
+    <a href="./index.html" onclick="document.querySelector('.hero').scrollIntoView({behavior:'smooth'})">Home</a>
+    <a href="./clubs.html">Clubs</a>
+    <a href="./events.html">Events</a>
+    <a href="./announcements.html">Announcements</a>
+    <a href="./venue-booking.html">Venues</a>
+  </nav>
+
+  <div class="nav-right">
+  <a href="./login.html" class="btn-login">Login</a>
+  <a href="./signup.html" class="btn-login">Sign Up</a>
+  <a href="#" class="btn-logout" style="display: none;" onclick="handleLogout()">Logout</a>
+  <div class="hamburger" aria-hidden="true">
+    <svg width="18" height="14" viewBox="0 0 18 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect y="1" width="18" height="2" rx="1" fill="rgba(220,220,220,0.9)"/>
+      <rect y="6" width="18" height="2" rx="1" fill="rgba(220,220,220,0.9)"/>
+      <rect y="11" width="18" height="2" rx="1" fill="rgba(220,220,220,0.9)"/>
+    </svg>
+  </div>
+</div>
+</header>
+
+
+  <!-- Main Content Wrapper -->
+  <div class="main-wrapper">
+
+
+
+    <main class="pt-28 pb-20 max-w-5xl mx-auto px-6">
+      <!-- Title -->
+      <section class="text-center mb-12">
+        <h2 class="text-4xl font-bold mb-2 page-title">Campus Announcements</h2>
+        <p class="text-gray-200 text-lg">Stay updated with the latest volunteer calls and club recruitments across RV University!</p>
+      </section>
+
+      <!-- All Announcements -->
+      <section id="announcements" x-data="announcementsData()">
+        <h3 class="text-2xl font-semibold mb-6 text-white">Volunteer & Club Announcements</h3>
+        <div class="space-y-6">
+
+
+          <!-- Volunteer Announcements -->
+          <template x-for="(announcement, index) in volunteerAnnouncements" :key="'volunteer-' + index">
+            <div x-data="{ expanded: false }" class="event-card rounded-xl p-6 shadow-lg border transition transform duration-300">
+              <h4 class="text-lg font-semibold text-blue-300 cursor-pointer flex justify-between items-center" @click="expanded = !expanded">
+                <span x-text="announcement.title"></span>
+                <svg :class="{'rotate-180': expanded}" class="w-5 h-5 transform transition-transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+              </h4>
+              <div x-show="expanded" x-transition class="mt-3 space-y-2 text-sm text-gray-200">
+                <p x-text="announcement.description"></p>
+                <p class="text-gray-400" x-text="announcement.date"></p>
+                <a href="#" class="inline-block text-blue-400 hover:text-blue-300 font-semibold transition">Apply as Volunteer →</a>
+              </div>
+            </div>
+          </template>
+
+
+          <!-- Club Recruitment Announcements -->
+          <template x-for="(club, index) in clubAnnouncements" :key="'club-' + index">
+            <div x-data="{ expanded: false }" class="event-card rounded-xl p-6 shadow-lg border transition transform duration-300">
+              <h4 class="text-lg font-semibold text-blue-300 cursor-pointer flex justify-between items-center" @click="expanded = !expanded">
+                <span x-text="club.title"></span>
+                <svg :class="{'rotate-180': expanded}" class="w-5 h-5 transform transition-transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+              </h4>
+              <div x-show="expanded" x-transition class="mt-3 space-y-2 text-sm text-gray-200">
+                <p x-text="club.description"></p>
+                <p class="text-gray-400" x-text="club.date"></p>
+                <a href="#" class="inline-block text-blue-400 hover:text-blue-300 font-semibold transition">Apply Now →</a>
+              </div>
+            </div>
+          </template>
+        </div>
+      </section>
+    </main>
+
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-left"></div>
+  <div class="footer-contacts">
+    <p>© 2026 Clubbed | ASED DevOps Project | RV University</p>
+  </div>
+  <div class="footer-team">
+    
+  </div>
+</footer>
+  </div>
+
+
+  <!-- VANTA.WAVES Background -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vanta/dist/vanta.waves.min.js"></script>
+  <script>
+      
+    VANTA.WAVES({
+      el: "#vanta-bg",
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x0a0520,
+      shininess: 20.00,
+      waveHeight: 20.00,
+      waveSpeed: 0.80,
+      zoom: 0.75
+    });
+
+    // mobile nav toggle
+    function toggleMobileNav() {
+      const nav = document.querySelector('.nav-links');
+      if (!nav) return;
+      if (nav.style.display === 'flex' || getComputedStyle(nav).display === 'flex') {
+        nav.style.display = 'none';
+      } else {
+        nav.style.display = 'flex';
+        nav.style.flexDirection = 'column';
+        nav.style.position = 'absolute';
+        nav.style.top = '64px';
+        nav.style.right = '4%';
+        nav.style.background = 'rgba(0,0,0,0.6)';
+        nav.style.padding = '10px';
+        nav.style.borderRadius = '10px';
+      }
+    }
+
+    // close mobile nav when clicking outside
+    document.addEventListener('click', (e) => {
+      const nav = document.querySelector('.nav-links');
+      const ham = document.querySelector('.hamburger');
+      if (!nav || !ham) return;
+      if (window.innerWidth <= 768) {
+        if (!nav.contains(e.target) && !ham.contains(e.target)) {
+          nav.style.display = 'none';
+        }
+      }
+    });
+  </script>
+
+
+  <!-- Alpine.js Data -->
+  <script>
+    function announcementsData() {
+      return {
+        volunteerAnnouncements: [
+          {
+            title: '🚀 Volunteers Needed for Argonyx Hackathon',
+            description: 'Looking for dynamic volunteers for event logistics, tech support, and crowd management.',
+            date: '🗓️ Oct 10–11, 2025 | 📍 RV University'
+          },
+          {
+            title: '💡 Volunteers Required for Capture The Flag (CTF)',
+            description: 'Seeking students interested in cybersecurity to manage technical setups and scoreboards.',
+            date: '🗓️ Oct 10, 2025 | 📍 CSE Lab'
+          }
+        ],
+        clubAnnouncements: [
+          {
+            title: '🎨 ChipTech Club Recruitment',
+            description: 'ChipTech is looking for UI/UX Designers and Frontend Developers passionate about tech design and IoT projects.',
+            date: '📅 Apply before Oct 15, 2025 | 📍 E-Block Lab'
+          },
+          {
+            title: '🔥 Rudra Club Open Positions',
+            description: 'Rudra, the cultural heartbeat of RVU, needs Graphic Designers and Event Coordinators for upcoming fests.',
+            date: '📅 Apply before Oct 18, 2025 | 📍 Main Block'
+          },
+          {
+            title: '🌱 Viksha Club is Recruiting!',
+            description: 'Join Viksha\'s sustainability initiative! Looking for Social Media Managers and Content Creators to promote green campus events.',
+            date: '📅 Apply before Oct 20, 2025 | 📍 D-Block'
+          }
+        ]
+      }
+    }
+  </script>
+  <script>
+    function handleLogout() {
+      const existingToast = document.getElementById('logout-toast');
+      if (existingToast) {
+        existingToast.remove();
+      }
+
+      const msg = document.createElement('div');
+      msg.id = 'logout-toast';
+      msg.textContent = 'Successfully logged out!';
+      msg.style.cssText = 'position:fixed; top:80px; left:50%; transform:translateX(-50%); background:#4caf50; color:white; padding:12px 24px; border-radius:8px; z-index:9999; box-shadow:0 4px 12px rgba(0,0,0,0.3); font-weight:600;';
+      document.body.appendChild(msg);
+
+      setTimeout(() => {
+        localStorage.removeItem('user');
+        window.location.href = 'index.html';
+      }, 1200);
+    }
+
+    (function applyAuthUiState() {
+      let user = null;
+      try {
+        user = JSON.parse(localStorage.getItem('user'));
+      } catch (error) {
+        user = null;
+      }
+
+      const loginButtons = document.querySelectorAll('.btn-login');
+      const logoutButtons = document.querySelectorAll('.btn-logout');
+
+      if (user) {
+        loginButtons.forEach((btn) => {
+          btn.style.display = 'none';
+        });
+        logoutButtons.forEach((btn) => {
+          btn.style.display = 'inline-block';
+        });
+      } else {
+        loginButtons.forEach((btn) => {
+          btn.style.display = 'inline-block';
+        });
+        logoutButtons.forEach((btn) => {
+          btn.style.display = 'none';
+        });
+      }
+
+      if (!user || user.role === 'user') {
+        document
+          .querySelectorAll('a[href="./venue-booking.html"], a[href="venue-booking.html"]')
+          .forEach((link) => {
+            link.style.display = 'none';
+          });
+      }
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clubbed - Signup</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: system-ui, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: black;
+      color: white;
+      font-family: system-ui, -apple-system, sans-serif;
+      position: relative;
+      padding: 20px;
+      padding-top: 84px;
+    }
+
+    /* ---------- NAVBAR ---------- */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 4%;
+      z-index: 999;
+      background: linear-gradient(180deg, rgba(0,0,0,0.45), rgba(0,0,0,0.15));
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .nav-logo {
+      width: 46px;
+      height: 46px;
+      object-fit: contain;
+      border-radius: 8px;
+    }
+
+    .brand {
+      color: white;
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: 0.6px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 18px;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: rgba(220,220,220,0.9);
+      text-decoration: none;
+      font-weight: 500;
+      padding: 8px 10px;
+      border-radius: 8px;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      background: rgba(111,111,255,0.12);
+      color: white;
+    }
+
+    .nav-right {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .btn-login {
+      font-size: 0.95rem;
+      color: #dcdcff;
+      background: transparent;
+      border: 2px solid #6f6fff;
+      border-radius: 8px;
+      padding: 8px 14px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      text-decoration: none;
+    }
+
+    .btn-login:hover {
+      background: #6f6fff;
+      color: white;
+      box-shadow: 0 0 12px rgba(111,111,255,0.4);
+    }
+
+    .btn-logout {
+      font-size: 0.95rem;
+      color: #ffd7d7;
+      background: transparent;
+      border: 2px solid #d65252;
+      border-radius: 8px;
+      padding: 8px 14px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      text-decoration: none;
+    }
+
+    .btn-logout:hover {
+      background: #d65252;
+      color: white;
+      box-shadow: 0 0 12px rgba(214,82,82,0.45);
+    }
+
+    .nav-search {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin: 0 20px;
+    }
+
+    .nav-search input {
+      padding: 6px 12px;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.3);
+      background: rgba(255,255,255,0.05);
+      color: white;
+      outline: none;
+      transition: all 0.3s ease;
+      width: 180px;
+    }
+
+    .nav-search input::placeholder {
+      color: rgba(255,255,255,0.6);
+    }
+
+    .nav-search input:focus {
+      background: rgba(255,255,255,0.1);
+      border-color: #6f6fff;
+    }
+
+    .nav-search button {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      color: white;
+      font-size: 1rem;
+    }
+
+    @media (max-width: 768px) {
+      .nav-search { display: none; }
+      .brand { display: none; }
+      .nav-links { display: none; }
+    }
+
+    #vanta-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+
+    .content-wrapper {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 500px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      background: linear-gradient(90deg, #b388ff, #00e6ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 8px;
+    }
+
+    .header p {
+      color: #e3b65c;
+      font-size: 0.95rem;
+      letter-spacing: 1.5px;
+    }
+
+    .divider {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(111, 111, 255, 0.5), transparent);
+      margin: 30px 0;
+    }
+
+    .nav-link {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .nav-link a {
+      color: #dcdcff;
+      text-decoration: none;
+      font-size: 0.95rem;
+      transition: color 0.3s ease;
+    }
+
+    .nav-link a:hover {
+      color: #b388ff;
+    }
+
+    .form-container {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 40px;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+      animation: fadeIn 0.4s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h3 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #d29cff;
+      font-size: 1.4rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: rgba(220, 220, 255, 0.9);
+      font-weight: 500;
+      font-size: 0.95rem;
+    }
+
+    .submit-btn {
+      width: 100%;
+      font-size: 1.05rem;
+      color: white;
+      background: linear-gradient(135deg, #6f6fff, #b388ff);
+      border: none;
+      border-radius: 8px;
+      padding: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 600;
+      margin-top: 10px;
+    }
+
+    .submit-btn:hover {
+      background: linear-gradient(135deg, #8080ff, #c49fff);
+      box-shadow: 0 0 20px rgba(111, 111, 255, 0.6);
+      transform: translateY(-2px);
+    }
+
+    .submit-btn:active {
+      transform: translateY(0);
+    }
+
+    .star-border {
+      position: relative;
+      display: inline-block;
+      border-radius: 12px;
+      overflow: hidden;
+      width: 100%;
+      margin-bottom: 20px;
+    }
+
+    .star-border .border-gradient-bottom,
+    .star-border .border-gradient-top {
+      position: absolute;
+      width: 120%;
+      height: 15%;
+      opacity: 0;
+      border-radius: 50%;
+      z-index: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .star-border .border-gradient-bottom {
+      bottom: -3px;
+      right: -60%;
+      animation: star-movement-bottom 5s linear infinite alternate;
+      animation-play-state: paused;
+    }
+
+    .star-border .border-gradient-top {
+      top: -3px;
+      left: -60%;
+      animation: star-movement-top 5s linear infinite alternate;
+      animation-play-state: paused;
+    }
+
+    .star-border:hover .border-gradient-bottom,
+    .star-border:hover .border-gradient-top {
+      opacity: 0.6;
+      animation-play-state: running;
+    }
+
+    .star-border input,
+    .star-border select,
+    .star-border button {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(111, 111, 255, 0.3);
+      border-radius: 8px;
+      padding: 12px 16px;
+      color: white;
+      font-size: 1rem;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+
+    .star-border input:focus,
+    .star-border select:focus,
+    .star-border button:focus {
+      border-color: #6f6fff;
+      box-shadow: 0 0 12px rgba(111, 111, 255, 0.3);
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    @keyframes star-movement-bottom {
+      0% { transform: translate(0%,0%); }
+      100% { transform: translate(-50%,0%); }
+    }
+
+    @keyframes star-movement-top {
+      0% { transform: translate(0%,0%); }
+      100% { transform: translate(50%,0%); }
+    }
+
+    @media (max-width: 600px) {
+      .header h1 { font-size: 2rem; }
+      .form-container { padding: 30px 25px; }
+    }
+  </style>
+</head>
+<body>
+  <div id="vanta-bg"></div>
+
+  <header class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="nav-left">
+      <img src="./rvu-logo.png" alt="RV logo" class="nav-logo">
+      <div class="brand">Clubbed</div>
+    </div>
+
+    <div class="nav-search">
+      <input type="text" placeholder="Search..." />
+      <button aria-label="Search"></button>
+    </div>
+
+    <nav class="nav-links" aria-label="Primary">
+      <a href="./index.html">Home</a>
+      <a href="./clubs.html">Clubs</a>
+      <a href="./events.html">Events</a>
+      <a href="./announcements.html">Announcements</a>
+      <a href="./venue-booking.html">Venues</a>
+    </nav>
+
+    <div class="nav-right">
+      <a href="./login.html" class="btn-login">Login</a>
+      <a href="./signup.html" class="btn-login">Sign Up</a>
+      <a href="#" class="btn-logout" style="display: none;" onclick="handleLogout()">Logout</a>
+    </div>
+  </header>
+
+  <div class="content-wrapper">
+    <div class="header">
+      <h1>Clubbed</h1>
+      <p>THE SMART CAMPUS COMPANION</p>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="nav-link">
+      <p>Already have an account? <a href="login.html">Login here</a></p>
+    </div>
+
+    <div class="form-container">
+      <form>
+        <h3>User Signup</h3>
+
+        <div class="star-border" data-color="#00ffff" data-speed="5s">
+          <div class="border-gradient-bottom"></div>
+          <div class="border-gradient-top"></div>
+          <input type="text" name="username" placeholder="Choose a username" required>
+        </div>
+
+        <div class="star-border" data-color="#ff00ff" data-speed="5s">
+          <div class="border-gradient-bottom"></div>
+          <div class="border-gradient-top"></div>
+          <input type="text" name="course" placeholder="e.g., Computer Science" required>
+        </div>
+
+        <div class="star-border" data-color="#00ffff" data-speed="5s">
+          <div class="border-gradient-bottom"></div>
+          <div class="border-gradient-top"></div>
+          <input type="text" name="year" placeholder="e.g., 2nd Year" required>
+        </div>
+
+        <div class="star-border" data-color="#ff00ff" data-speed="5s">
+          <div class="border-gradient-bottom"></div>
+          <div class="border-gradient-top"></div>
+          <input type="password" name="password" placeholder="Create a password" required>
+        </div>
+
+        <div class="star-border" data-color="#00ffff" data-speed="5s">
+          <div class="border-gradient-bottom"></div>
+          <div class="border-gradient-top"></div>
+          <input type="password" name="confirm_password" placeholder="Re-enter your password" required>
+        </div>
+
+        <div class="star-border" data-color="#ff00ff" data-speed="5s">
+          <div class="border-gradient-bottom"></div>
+          <div class="border-gradient-top"></div>
+          <button type="submit" class="submit-btn">Sign Up</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vanta/dist/vanta.waves.min.js"></script>
+
+  <script>
+    VANTA.WAVES({
+      el: "#vanta-bg",
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x0a0520,
+      shininess: 20.00,
+      waveHeight: 20.00,
+      waveSpeed: 0.80,
+      zoom: 0.75
+    });
+
+    document.querySelector('form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const username = document.querySelector('input[name="username"]').value;
+      const course = document.querySelector('input[name="course"]').value;
+      const year = document.querySelector('input[name="year"]').value;
+      const password = document.querySelector('input[name="password"]').value;
+      const confirm_password = document.querySelector('input[name="confirm_password"]').value;
+
+      try {
+        const response = await fetch('/api/user/signup', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, course, year, password, confirm_password })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          const msg = document.createElement('div');
+          msg.textContent = '✓ Account created! Redirecting to login...';
+          msg.style.cssText = 'position:fixed; top:80px; left:50%; transform:translateX(-50%); background:#4caf50; color:white; padding:12px 24px; border-radius:8px; z-index:9999; box-shadow:0 4px 12px rgba(0,0,0,0.3); font-weight:600;';
+          document.body.appendChild(msg);
+          setTimeout(() => window.location.href = 'login.html', 1500);
+        } else {
+          const msg = document.createElement('div');
+          msg.textContent = '✗ ' + data.message;
+          msg.style.cssText = 'position:fixed; top:80px; left:50%; transform:translateX(-50%); background:#f44336; color:white; padding:12px 24px; border-radius:8px; z-index:9999; box-shadow:0 4px 12px rgba(0,0,0,0.3); font-weight:600;';
+          document.body.appendChild(msg);
+          setTimeout(() => msg.remove(), 3000);
+        }
+      } catch (error) {
+        const msg = document.createElement('div');
+        msg.textContent = '✗ Error: ' + error.message;
+        msg.style.cssText = 'position:fixed; top:80px; left:50%; transform:translateX(-50%); background:#f44336; color:white; padding:12px 24px; border-radius:8px; z-index:9999; box-shadow:0 4px 12px rgba(0,0,0,0.3); font-weight:600;';
+        document.body.appendChild(msg);
+        setTimeout(() => msg.remove(), 3000);
+      }
+    });
+
+    document.querySelectorAll('.star-border').forEach(el => {
+      const color = el.getAttribute('data-color') || 'white';
+      const speed = el.getAttribute('data-speed') || '6s';
+      const top = el.querySelector('.border-gradient-top');
+      const bottom = el.querySelector('.border-gradient-bottom');
+      if(top) {
+        top.style.background = `radial-gradient(circle, ${color}, transparent 10%)`;
+        top.style.animationDuration = speed;
+      }
+      if(bottom) {
+        bottom.style.background = `radial-gradient(circle, ${color}, transparent 10%)`;
+        bottom.style.animationDuration = speed;
+      }
+    });
+  </script>
+  <script>
+    function handleLogout() {
+      const existingToast = document.getElementById('logout-toast');
+      if (existingToast) {
+        existingToast.remove();
+      }
+
+      const msg = document.createElement('div');
+      msg.id = 'logout-toast';
+      msg.textContent = 'Successfully logged out!';
+      msg.style.cssText = 'position:fixed; top:80px; left:50%; transform:translateX(-50%); background:#4caf50; color:white; padding:12px 24px; border-radius:8px; z-index:9999; box-shadow:0 4px 12px rgba(0,0,0,0.3); font-weight:600;';
+      document.body.appendChild(msg);
+
+      setTimeout(() => {
+        localStorage.removeItem('user');
+        window.location.href = 'index.html';
+      }, 1200);
+    }
+
+    (function applyAuthUiState() {
+      let user = null;
+      try {
+        user = JSON.parse(localStorage.getItem('user'));
+      } catch (error) {
+        user = null;
+      }
+
+      const loginButtons = document.querySelectorAll('.btn-login');
+      const logoutButtons = document.querySelectorAll('.btn-logout');
+
+      if (user) {
+        loginButtons.forEach((btn) => {
+          btn.style.display = 'none';
+        });
+        logoutButtons.forEach((btn) => {
+          btn.style.display = 'inline-block';
+        });
+      } else {
+        loginButtons.forEach((btn) => {
+          btn.style.display = 'inline-block';
+        });
+        logoutButtons.forEach((btn) => {
+          btn.style.display = 'none';
+        });
+      }
+
+      if (!user || user.role === 'user') {
+        document
+          .querySelectorAll('a[href="./venue-booking.html"], a[href="venue-booking.html"]')
+          .forEach((link) => {
+            link.style.display = 'none';
+          });
+      }
+    })();
+  </script>
+</body>
+</html>

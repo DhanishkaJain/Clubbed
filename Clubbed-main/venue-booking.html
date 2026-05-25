@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Clubbed | Venue Booking</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: system-ui, sans-serif;
+    }
+
+    body {
+      background: #000000;
+      color: white;
+      font-family: system-ui, -apple-system, sans-serif;
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding-top: 64px;
+      margin: 0;
+    }
+
+    /* ---------- NAVBAR ---------- */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 4%;
+      z-index: 999;
+      background: linear-gradient(180deg, rgba(0,0,0,0.45), rgba(0,0,0,0.15));
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .nav-logo {
+      width: 46px;
+      height: 46px;
+      object-fit: contain;
+      border-radius: 8px;
+    }
+
+    .brand {
+      color: white;
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: 0.6px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 18px;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: rgba(220,220,220,0.9);
+      text-decoration: none;
+      font-weight: 500;
+      padding: 8px 10px;
+      border-radius: 8px;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      background: rgba(111,111,255,0.12);
+      color: white;
+    }
+
+    .nav-right {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .btn-login {
+      font-size: 0.95rem;
+      color: #dcdcff;
+      background: transparent;
+      border: 2px solid #6f6fff;
+      border-radius: 8px;
+      padding: 8px 14px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      text-decoration: none;
+    }
+
+    .btn-login:hover {
+      background: #6f6fff;
+      color: white;
+      box-shadow: 0 0 12px rgba(111,111,255,0.4);
+    }
+
+    .btn-logout {
+      font-size: 0.95rem;
+      color: #ffd7d7;
+      background: transparent;
+      border: 2px solid #d65252;
+      border-radius: 8px;
+      padding: 8px 14px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      text-decoration: none;
+    }
+
+    .btn-logout:hover {
+      background: #d65252;
+      color: white;
+      box-shadow: 0 0 12px rgba(214,82,82,0.45);
+    }
+
+    .hamburger {
+      display: none;
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.03);
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .nav-search {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin: 0 20px;
+    }
+
+    .nav-search input {
+      padding: 6px 12px;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.3);
+      background: rgba(255,255,255,0.05);
+      color: white;
+      outline: none;
+      transition: all 0.3s ease;
+      width: 180px;
+    }
+
+    .nav-search input::placeholder {
+      color: rgba(255,255,255,0.6);
+    }
+
+    .nav-search input:focus {
+      background: rgba(255,255,255,0.1);
+      border-color: #6f6fff;
+    }
+
+    .nav-search button {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      color: white;
+      font-size: 1rem;
+    }
+
+    @media (max-width: 768px) {
+      .nav-search { display: none; }
+      .brand { display: none; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+    }
+
+    .page-wrap {
+      width: min(1200px, 92%);
+      margin: 32px auto 60px;
+      position: relative;
+      z-index: 2;
+      flex: 1;
+    }
+
+    .page-title {
+      font-size: clamp(2rem, 4.5vw, 3.4rem);
+      font-weight: 700;
+      margin-bottom: 24px;
+      background: linear-gradient(90deg, #b388ff, #00e6ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .glass {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border: 1px solid rgba(255,255,255,0.2);
+      box-shadow: 0 12px 38px rgba(0,0,0,0.35);
+      border-radius: 18px;
+    }
+
+    .section {
+      padding: 24px;
+      margin-bottom: 24px;
+      transition: opacity 0.35s ease, transform 0.35s ease;
+    }
+
+    .pending-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .pending-card {
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 12px;
+      background: rgba(255,255,255,0.08);
+      padding: 14px;
+    }
+
+    .pending-meta {
+      color: rgba(255,255,255,0.85);
+      font-size: 0.92rem;
+      margin-top: 6px;
+    }
+
+    .pending-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .section h2 {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+      background: linear-gradient(90deg, #b388ff, #00e6ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .section p {
+      color: rgba(255,255,255,0.85);
+      margin-bottom: 16px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .calendar-grid-wrap {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(280px, 1fr));
+      gap: 18px;
+    }
+
+    .calendar-card {
+      background: rgba(8, 10, 24, 0.72);
+      border: 1px solid rgba(111,111,255,0.25);
+      border-radius: 14px;
+      padding: 18px;
+    }
+
+    .calendar-month {
+      font-size: 1.2rem;
+      margin-bottom: 12px;
+      color: #e9deff;
+    }
+
+    .weekday-row,
+    .date-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+    }
+
+    .weekday {
+      text-align: center;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.7);
+      font-weight: 600;
+    }
+
+    .calendar-day {
+      min-height: 40px;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 10px;
+      background: rgba(255,255,255,0.05);
+      color: white;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.25s ease, border-color 0.2s ease;
+    }
+
+    .calendar-day:hover {
+      transform: translateY(-2px);
+      border-color: rgba(111,111,255,0.75);
+      box-shadow: 0 0 18px rgba(111,111,255,0.35);
+    }
+
+    .calendar-day.disabled,
+    .calendar-day.empty {
+      cursor: not-allowed;
+      opacity: 0.32;
+      background: rgba(255,255,255,0.03);
+      box-shadow: none;
+      border-color: rgba(255,255,255,0.08);
+    }
+
+    .calendar-day.selected {
+      border-color: #00e6ff;
+      box-shadow: 0 0 20px rgba(0, 230, 255, 0.4);
+      background: rgba(0, 230, 255, 0.15);
+    }
+
+    .venues-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+      margin-top: 10px;
+    }
+
+    .venue-card {
+      padding: 18px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.35s ease, border-color 0.2s ease;
+      font-weight: 600;
+      color: #f4ecff;
+    }
+
+    .venue-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 60px rgba(123, 47, 247, 0.45);
+      border-color: rgba(111,111,255,0.7);
+    }
+
+    .venue-card.active {
+      border-color: #00e6ff;
+      box-shadow: 0 0 22px rgba(0,230,255,0.35);
+    }
+
+    .slots-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .slot {
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      color: #f6f6ff;
+      padding: 12px;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .slot:hover {
+      transform: translateY(-2px);
+      border-color: rgba(111,111,255,0.8);
+      box-shadow: 0 0 16px rgba(111,111,255,0.28);
+    }
+
+    .slot .slot-state {
+      display: inline-block;
+      margin-top: 5px;
+      font-size: 0.82rem;
+      opacity: 0.9;
+    }
+
+    .slot.booked {
+      opacity: 0.45;
+      cursor: not-allowed;
+      background: rgba(130,130,130,0.2);
+      border-color: rgba(170,170,170,0.2);
+      box-shadow: none;
+    }
+
+    .slot.pending {
+      opacity: 0.55;
+      cursor: not-allowed;
+      background: rgba(255,193,7,0.12);
+      border-color: rgba(255,193,7,0.28);
+      box-shadow: none;
+    }
+
+    .slot.available .slot-state {
+      color: #7CFF9A;
+    }
+
+    .slot.booked .slot-state {
+      color: #ff9494;
+    }
+
+    .slot.pending .slot-state {
+      color: #ffd36b;
+    }
+
+    .slot.selected {
+      border-color: #00e6ff;
+      box-shadow: 0 0 20px rgba(0,230,255,0.35);
+      background: rgba(0,230,255,0.15);
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+
+    .btn {
+      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      color: white;
+      border-radius: 10px;
+      padding: 10px 14px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      text-decoration: none;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      border-color: rgba(111,111,255,0.8);
+      box-shadow: 0 0 14px rgba(111,111,255,0.28);
+    }
+
+    .btn-primary {
+      border-color: #6f6fff;
+      background: linear-gradient(135deg, #6f6fff, #b388ff);
+      font-weight: 600;
+    }
+
+    .message {
+      padding: 12px;
+      border-radius: 8px;
+      margin-top: 14px;
+      text-align: center;
+      font-weight: 500;
+      display: none;
+    }
+
+    .message.error {
+      background: rgba(244, 67, 54, 0.2);
+      border: 1px solid rgba(244, 67, 54, 0.5);
+      color: #ff6b6b;
+    }
+
+    .message.success {
+      background: rgba(76, 175, 80, 0.2);
+      border: 1px solid rgba(76, 175, 80, 0.5);
+      color: #4caf50;
+    }
+
+    .info-line {
+      color: #e3b65c;
+      font-size: 0.95rem;
+      margin-bottom: 8px;
+    }
+
+    @media (max-width: 900px) {
+      .calendar-grid-wrap {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ---------- FOOTER ---------- */
+    .footer {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(15px);
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding: 40px 4%;
+      margin-top: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 30px;
+    }
+
+    .footer-left {
+      flex: 1;
+    }
+
+    .footer-contacts {
+      display: flex;
+      gap: 30px;
+      align-items: center;
+      flex: 1;
+      justify-content: center;
+    }
+
+    .footer-contacts a {
+      color: #cfe3ff;
+      text-decoration: none;
+      font-size: 1rem;
+      font-weight: 500;
+      transition: color 0.3s ease, transform 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .footer-contacts a:hover {
+      color: #ff6ec7;
+      transform: translateY(-2px);
+    }
+
+    .footer-team {
+      color: rgba(255,255,255,0.9);
+      font-size: 1rem;
+      font-weight: 500;
+      flex: 1;
+      text-align: right;
+    }
+
+    @media (max-width: 768px) {
+      .footer {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .footer-left {
+        display: none;
+      }
+
+      .footer-contacts {
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .footer-team {
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body id="vanta-bg">
+  <header class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="nav-left">
+      <img src="./rvu-logo.png  " alt="RV logo" class="nav-logo">
+      <div class="brand">Clubbed</div>
+    </div>
+
+    <div class="nav-search">
+      <input type="text" placeholder="Search..." />
+      <button aria-label="Search"></button>
+    </div>
+
+    <nav class="nav-links" aria-label="Primary">
+      <a href="./index.html">Home</a>
+      <a href="./clubs.html">Clubs</a>
+      <a href="./events.html">Events</a>
+      <a href="./announcements.html">Announcements</a>
+      <a href="./venue-booking.html">Venues</a>
+    </nav>
+
+    <div class="nav-right">
+      <a href="./login.html" class="btn-login">Login</a>
+      <a href="./signup.html" class="btn-login">Sign Up</a>
+      <a href="#" class="btn-logout" style="display: none;" onclick="handleLogout()">Logout</a>
+      <div class="hamburger" aria-hidden="true">
+        <svg width="18" height="14" viewBox="0 0 18 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect y="1" width="18" height="2" rx="1" fill="rgba(220,220,220,0.9)"/>
+          <rect y="6" width="18" height="2" rx="1" fill="rgba(220,220,220,0.9)"/>
+          <rect y="11" width="18" height="2" rx="1" fill="rgba(220,220,220,0.9)"/>
+        </svg>
+      </div>
+    </div>
+  </header>
+
+  <main class="page-wrap">
+    <h1 class="page-title">Venue Booking</h1>
+
+    <section id="pendingRequestsSection" class="section glass hidden">
+      <h2>Pending Requests</h2>
+      <p>Approve or deny president booking requests.</p>
+      <div id="pendingRequestsGrid" class="pending-grid"></div>
+    </section>
+
+    <section id="calendarSection" class="section glass">
+      <h2>Select a Date</h2>
+      <p class="info-line">Only future dates can be selected.</p>
+      <div id="calendarGrid" class="calendar-grid-wrap"></div>
+    </section>
+
+    <section id="venueSection" class="section glass hidden">
+      <h2>Select a Venue</h2>
+      <p id="selectedDateText"></p>
+      <div class="venues-grid" id="venuesGrid"></div>
+      <div class="actions">
+        <button id="backCalendarFromVenue" class="btn">&#8592; Back to Calendar</button>
+      </div>
+    </section>
+
+    <section id="slotSection" class="section glass hidden">
+      <h2>Hourly Time Slots</h2>
+      <p id="selectionInfo"></p>
+      <div class="slots-grid" id="slotsGrid"></div>
+      <div class="actions">
+        <button id="bookSlotBtn" class="btn btn-primary hidden">Book Slot</button>
+        <button id="backVenuesFromSlot" class="btn">&#8592; Back to Venues</button>
+        <button id="backCalendarFromSlot" class="btn">&#8592; Back to Calendar</button>
+      </div>
+      <div id="bookingMessage" class="message success"></div>
+    </section>
+  </main>
+
+  <footer class="footer" id="contact">
+    <div class="footer-left"></div>
+    <div class="footer-contacts">
+      <p>© 2026 Clubbed | ASED DevOps Project | RV University</p>
+    </div>
+    <div class="footer-team">
+
+    </div>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vanta/dist/vanta.waves.min.js"></script>
+  <script>
+    const API_URL = 'http://localhost:3000/api';
+
+    VANTA.WAVES({
+      el: "#vanta-bg",
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x0a0520,
+      shininess: 20.00,
+      waveHeight: 20.00,
+      waveSpeed: 0.80,
+      zoom: 0.75
+    });
+
+    (function initVenueBooking() {
+      let currentUser = null;
+      try {
+        currentUser = JSON.parse(localStorage.getItem('user'));
+      } catch (error) {
+        currentUser = null;
+      }
+
+      if (!currentUser || currentUser.role === 'user') {
+        window.location.href = 'index.html';
+        return;
+      }
+
+      const isPresident = currentUser.role === 'president';
+      const isAdmin = currentUser.role === 'admin';
+      const currentUserId = currentUser.id || currentUser._id || currentUser.userId || null;
+
+      if (!currentUserId) {
+        localStorage.removeItem('user');
+        window.location.href = 'login.html';
+        return;
+      }
+
+      const venues = [
+        "Satyajit Ray Hall",
+        "Homi J Bhabha Hall",
+        "Multipurpose Hall",
+        "Grand Stairs"
+      ];
+
+      const slotLabels = [];
+      for (let hour = 9; hour < 18; hour++) {
+        slotLabels.push(`${formatHour(hour)} - ${formatHour(hour + 1)}`);
+      }
+
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      let selectedDate = null;
+      let selectedVenue = null;
+      let selectedSlotIndex = null;
+      const slotStateCache = {};
+      const occupiedStatuses = new Set(['pending', 'approved', 'confirmed']);
+      let slotRefreshToken = 0;
+
+      const calendarGrid = document.getElementById("calendarGrid");
+      const venueSection = document.getElementById("venueSection");
+      const slotSection = document.getElementById("slotSection");
+      const selectedDateText = document.getElementById("selectedDateText");
+      const selectionInfo = document.getElementById("selectionInfo");
+      const venuesGrid = document.getElementById("venuesGrid");
+      const slotsGrid = document.getElementById("slotsGrid");
+      const bookingMessage = document.getElementById("bookingMessage");
+      const bookSlotBtn = document.getElementById("bookSlotBtn");
+      const pendingRequestsSection = document.getElementById('pendingRequestsSection');
+      const pendingRequestsGrid = document.getElementById('pendingRequestsGrid');
+
+      if (isPresident) {
+        bookSlotBtn.textContent = 'Request Booking';
+      } else if (isAdmin) {
+        bookSlotBtn.textContent = 'Book Slot (Admin)';
+      }
+
+      if (isAdmin) {
+        pendingRequestsSection.classList.remove('hidden');
+        loadPendingRequests();
+      }
+
+      renderTwoMonths();
+      renderVenueCards();
+
+      const syncTimer = window.setInterval(() => {
+        if (selectedDate !== null && selectedVenue !== null) {
+          refreshSelectedSlotState();
+        }
+
+        if (isAdmin) {
+          loadPendingRequests();
+        }
+      }, 15000);
+
+      window.addEventListener('focus', () => {
+        if (selectedDate !== null && selectedVenue !== null) {
+          refreshSelectedSlotState();
+        }
+
+        if (isAdmin) {
+          loadPendingRequests();
+        }
+      });
+
+      document.getElementById("backCalendarFromVenue").addEventListener("click", () => {
+        venueSection.classList.add("hidden");
+        slotSection.classList.add("hidden");
+        resetSelectionFromVenue();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+
+      document.getElementById("backVenuesFromSlot").addEventListener("click", () => {
+        slotSection.classList.add("hidden");
+        selectedSlotIndex = null;
+        bookSlotBtn.classList.add("hidden");
+        bookingMessage.style.display = "none";
+        window.scrollTo({ top: venueSection.offsetTop - 80, behavior: "smooth" });
+      });
+
+      document.getElementById("backCalendarFromSlot").addEventListener("click", () => {
+        slotSection.classList.add("hidden");
+        venueSection.classList.add("hidden");
+        resetSelectionFromVenue();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+
+      bookSlotBtn.addEventListener("click", () => {
+        if (!isPresident && !isAdmin) {
+          return;
+        }
+
+        if (selectedDate === null || selectedVenue === null || selectedSlotIndex === null) return;
+
+        requestBooking();
+      });
+
+      function renderTwoMonths() {
+        calendarGrid.innerHTML = "";
+        const now = new Date();
+        const monthA = new Date(now.getFullYear(), now.getMonth(), 1);
+        const monthB = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+
+        calendarGrid.appendChild(buildMonthCard(monthA));
+        calendarGrid.appendChild(buildMonthCard(monthB));
+      }
+
+      function buildMonthCard(monthStart) {
+        const card = document.createElement("div");
+        card.className = "calendar-card";
+
+        const title = document.createElement("h3");
+        title.className = "calendar-month";
+        title.textContent = monthStart.toLocaleString("default", { month: "long", year: "numeric" });
+        card.appendChild(title);
+
+        const weekRow = document.createElement("div");
+        weekRow.className = "weekday-row";
+        ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].forEach((d) => {
+          const el = document.createElement("div");
+          el.className = "weekday";
+          el.textContent = d;
+          weekRow.appendChild(el);
+        });
+        card.appendChild(weekRow);
+
+        const grid = document.createElement("div");
+        grid.className = "date-grid";
+
+        const year = monthStart.getFullYear();
+        const month = monthStart.getMonth();
+        const firstWeekDay = new Date(year, month, 1).getDay();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+        for (let i = 0; i < firstWeekDay; i++) {
+          const empty = document.createElement("button");
+          empty.className = "calendar-day empty";
+          empty.disabled = true;
+          grid.appendChild(empty);
+        }
+
+        for (let day = 1; day <= daysInMonth; day++) {
+          const dateObj = new Date(year, month, day);
+          dateObj.setHours(0, 0, 0, 0);
+
+          const dayBtn = document.createElement("button");
+          dayBtn.className = "calendar-day";
+          dayBtn.textContent = day;
+
+          if (dateObj <= today) {
+            dayBtn.classList.add("disabled");
+            dayBtn.disabled = true;
+          } else {
+            dayBtn.addEventListener("click", () => {
+              document.querySelectorAll(".calendar-day.selected").forEach((el) => el.classList.remove("selected"));
+              dayBtn.classList.add("selected");
+              selectedDate = new Date(dateObj);
+              selectedDateText.textContent = `Selected Date: ${formatLongDate(selectedDate)}`;
+              venueSection.classList.remove("hidden");
+              slotSection.classList.add("hidden");
+              selectedVenue = null;
+              selectedSlotIndex = null;
+              bookingMessage.style.display = "none";
+              bookSlotBtn.classList.add("hidden");
+              document.querySelectorAll(".venue-card.active").forEach((el) => el.classList.remove("active"));
+              window.scrollTo({ top: venueSection.offsetTop - 80, behavior: "smooth" });
+            });
+          }
+
+          grid.appendChild(dayBtn);
+        }
+
+        card.appendChild(grid);
+        return card;
+      }
+
+      function renderVenueCards() {
+        venuesGrid.innerHTML = "";
+        venues.forEach((venue, idx) => {
+          const card = document.createElement("button");
+          card.className = "venue-card";
+          card.textContent = venue;
+
+          card.addEventListener("click", async () => {
+            if (!selectedDate) return;
+            selectedVenue = idx;
+            selectedSlotIndex = null;
+            bookingMessage.style.display = "none";
+            bookSlotBtn.classList.add("hidden");
+
+            document.querySelectorAll(".venue-card.active").forEach((el) => el.classList.remove("active"));
+            card.classList.add("active");
+
+            selectionInfo.textContent = `${venues[selectedVenue]} on ${formatLongDate(selectedDate)}`;
+            slotSection.classList.remove("hidden");
+            slotsGrid.innerHTML = '<div class="pending-meta">Loading booked slots...</div>';
+            await refreshSelectedSlotState();
+            window.scrollTo({ top: slotSection.offsetTop - 80, behavior: "smooth" });
+          });
+
+          venuesGrid.appendChild(card);
+        });
+      }
+
+      function ensureSlotState() {
+        if (selectedDate === null || selectedVenue === null) {
+          return null;
+        }
+
+        const key = getSlotKey(selectedDate, selectedVenue);
+        if (!slotStateCache[key]) {
+          slotStateCache[key] = slotLabels.map(() => "available");
+        }
+
+        return key;
+      }
+
+      async function refreshSelectedSlotState() {
+        const key = ensureSlotState();
+        if (!key) {
+          return;
+        }
+
+        const requestToken = ++slotRefreshToken;
+
+        try {
+          const response = await fetch(
+            `${API_URL}/bookings/slots?userId=${encodeURIComponent(currentUserId)}&venueName=${encodeURIComponent(venues[selectedVenue])}&bookingDate=${encodeURIComponent(selectedDate.toISOString())}`,
+            { cache: 'no-store' }
+          );
+          const data = await parseJsonSafe(response);
+
+          if (requestToken !== slotRefreshToken) {
+            return;
+          }
+
+          if (!response.ok || !data || !data.success) {
+            const fallbackMessage = response.status === 404
+              ? 'Bookings API unavailable. Restart backend server.'
+              : 'Failed to load booked slots';
+            bookingMessage.textContent = (data && data.message) || fallbackMessage;
+            bookingMessage.className = 'message error';
+            bookingMessage.style.display = 'block';
+            return;
+          }
+
+          const nextStates = slotLabels.map(() => 'available');
+          (data.bookings || []).forEach((booking) => {
+            const index = booking.timeSlotIndex;
+            if (index === undefined || index === null || index < 0 || index >= nextStates.length) {
+              return;
+            }
+
+            if (booking.status === 'approved' || booking.status === 'confirmed') {
+              nextStates[index] = 'booked';
+            } else if (occupiedStatuses.has(booking.status) && nextStates[index] !== 'booked') {
+              nextStates[index] = 'pending';
+            }
+          });
+
+          slotStateCache[key] = nextStates;
+          renderSlots();
+        } catch (error) {
+          if (requestToken !== slotRefreshToken) {
+            return;
+          }
+
+          bookingMessage.textContent = 'Server error while loading booked slots';
+          bookingMessage.className = 'message error';
+          bookingMessage.style.display = 'block';
+        }
+      }
+
+      function renderSlots() {
+        if (selectedDate === null || selectedVenue === null) {
+          slotsGrid.innerHTML = '';
+          return;
+        }
+
+        const key = getSlotKey(selectedDate, selectedVenue);
+        const states = slotStateCache[key] || [];
+
+        slotsGrid.innerHTML = "";
+        states.forEach((state, index) => {
+          const slotBtn = document.createElement("button");
+          slotBtn.className = `slot ${state === "booked" ? "booked" : state === "pending" ? "pending" : "available"}`;
+
+          if (selectedSlotIndex === index && state === "available") {
+            slotBtn.classList.add("selected");
+          }
+
+          slotBtn.innerHTML = `<div>${slotLabels[index]}</div><span class="slot-state">${state === "booked" ? "Booked" : state === "pending" ? "Pending approval" : "Available"}</span>`;
+
+          if (state === "booked" || state === "pending") {
+            slotBtn.disabled = true;
+          } else {
+            slotBtn.addEventListener("click", () => {
+              bookingMessage.style.display = "none";
+              selectedSlotIndex = index;
+              if (isPresident || isAdmin) {
+                bookSlotBtn.classList.remove("hidden");
+              } else {
+                bookSlotBtn.classList.add("hidden");
+              }
+              renderSlots();
+            });
+          }
+
+          slotsGrid.appendChild(slotBtn);
+        });
+      }
+
+      function getSlotKey(dateObj, venueIndex) {
+        const dateKey = `${dateObj.getFullYear()}-${dateObj.getMonth() + 1}-${dateObj.getDate()}`;
+        return `${dateKey}|${venueIndex}`;
+      }
+
+      function formatLongDate(dateObj) {
+        return dateObj.toLocaleDateString("en-IN", {
+          weekday: "long",
+          day: "numeric",
+          month: "long",
+          year: "numeric"
+        });
+      }
+
+      function formatHour(hour24) {
+        const suffix = hour24 >= 12 ? "PM" : "AM";
+        const hour12 = hour24 % 12 === 0 ? 12 : hour24 % 12;
+        return `${hour12}:00 ${suffix}`;
+      }
+
+      function resetSelectionFromVenue() {
+        selectedVenue = null;
+        selectedSlotIndex = null;
+        bookingMessage.style.display = "none";
+        bookSlotBtn.classList.add("hidden");
+        document.querySelectorAll(".venue-card.active").forEach((el) => el.classList.remove("active"));
+      }
+
+      async function parseJsonSafe(response) {
+        const contentType = response.headers.get('content-type') || '';
+        if (!contentType.toLowerCase().includes('application/json')) {
+          return null;
+        }
+
+        try {
+          return await response.json();
+        } catch (error) {
+          return null;
+        }
+      }
+
+      async function requestBooking() {
+        try {
+          const response = await fetch(`${API_URL}/bookings`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              userId: currentUserId,
+              clubName: currentUser.clubName || 'Chiptech',
+              venueName: venues[selectedVenue],
+              bookingDate: selectedDate.toISOString(),
+              timeSlotIndex: selectedSlotIndex
+            })
+          });
+
+          const data = await parseJsonSafe(response);
+
+          if (!response.ok || !data || !data.success) {
+            bookingMessage.textContent = (data && data.message) || 'Unable to request booking';
+            bookingMessage.className = 'message error';
+            bookingMessage.style.display = 'block';
+            return;
+          }
+
+          bookingMessage.textContent = isAdmin ? 'Booking confirmed successfully.' : 'Booking requested. Pending Admin approval.';
+          bookingMessage.className = 'message success';
+          bookingMessage.style.display = 'block';
+          selectedSlotIndex = null;
+          bookSlotBtn.classList.add('hidden');
+          await refreshSelectedSlotState();
+          if (isAdmin) {
+            await loadPendingRequests();
+          }
+        } catch (error) {
+          bookingMessage.textContent = 'Server error while requesting booking';
+          bookingMessage.className = 'message error';
+          bookingMessage.style.display = 'block';
+        }
+      }
+
+      async function loadPendingRequests() {
+        if (!isAdmin) {
+          return;
+        }
+
+        pendingRequestsGrid.innerHTML = '<div class="pending-meta">Loading pending requests...</div>';
+
+        try {
+          const response = await fetch(`${API_URL}/bookings/pending?userId=${encodeURIComponent(currentUserId)}`);
+          const data = await parseJsonSafe(response);
+
+          if (!response.ok || !data || !data.success) {
+            pendingRequestsGrid.innerHTML = `<div class="pending-meta">${(data && data.message) || 'Failed to load pending requests'}</div>`;
+            return;
+          }
+
+          if (!data.bookings || data.bookings.length === 0) {
+            pendingRequestsGrid.innerHTML = '<div class="pending-meta">No pending requests.</div>';
+            return;
+          }
+
+          pendingRequestsGrid.innerHTML = '';
+          data.bookings.forEach((booking) => {
+            const card = document.createElement('div');
+            card.className = 'pending-card';
+
+            const formattedDate = new Date(booking.bookingDate).toLocaleDateString('en-IN', {
+              day: 'numeric',
+              month: 'short',
+              year: 'numeric'
+            });
+
+            card.innerHTML = `
+              <strong>${booking.venueId ? booking.venueId.name : 'Unknown Venue'}</strong>
+              <div class="pending-meta">Club: ${booking.clubId ? booking.clubId.name : 'Unknown Club'}</div>
+              <div class="pending-meta">Requested by: ${booking.bookedByPresidentId ? booking.bookedByPresidentId.username : 'Unknown'}</div>
+              <div class="pending-meta">Date: ${formattedDate}</div>
+              <div class="pending-meta">Slot: ${slotLabels[booking.timeSlotIndex] || booking.timeSlotIndex}</div>
+              <div class="pending-actions">
+                <button class="btn btn-primary" data-action="approved" data-id="${booking._id}">Approve</button>
+                <button class="btn" data-action="rejected" data-id="${booking._id}">Deny</button>
+              </div>
+            `;
+
+            pendingRequestsGrid.appendChild(card);
+          });
+
+          pendingRequestsGrid.querySelectorAll('button[data-action]').forEach((btn) => {
+            btn.addEventListener('click', async () => {
+              const bookingId = btn.getAttribute('data-id');
+              const status = btn.getAttribute('data-action');
+              await updateBookingStatus(bookingId, status);
+            });
+          });
+        } catch (error) {
+          pendingRequestsGrid.innerHTML = '<div class="pending-meta">Server error while fetching requests.</div>';
+        }
+      }
+
+      async function updateBookingStatus(bookingId, status) {
+        try {
+          const response = await fetch(`${API_URL}/bookings/${bookingId}/status`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId: currentUserId, status })
+          });
+
+          const data = await parseJsonSafe(response);
+
+          if (!response.ok || !data || !data.success) {
+            bookingMessage.textContent = (data && data.message) || 'Failed to update booking status';
+            bookingMessage.className = 'message error';
+            bookingMessage.style.display = 'block';
+            return;
+          }
+
+          bookingMessage.textContent = data.message || `Booking ${status} successfully`;
+          bookingMessage.className = 'message success';
+          bookingMessage.style.display = 'block';
+          await Promise.all([
+            loadPendingRequests(),
+            refreshSelectedSlotState()
+          ]);
+        } catch (error) {
+          bookingMessage.textContent = 'Server error while updating booking status';
+          bookingMessage.className = 'message error';
+          bookingMessage.style.display = 'block';
+        }
+      }
+    })();
+  </script>
+  <script>
+    function handleLogout() {
+      const existingToast = document.getElementById('logout-toast');
+      if (existingToast) {
+        existingToast.remove();
+      }
+
+      const msg = document.createElement('div');
+      msg.id = 'logout-toast';
+      msg.textContent = 'Successfully logged out!';
+      msg.style.cssText = 'position:fixed; top:80px; left:50%; transform:translateX(-50%); background:#4caf50; color:white; padding:12px 24px; border-radius:8px; z-index:9999; box-shadow:0 4px 12px rgba(0,0,0,0.3); font-weight:600;';
+      document.body.appendChild(msg);
+
+      setTimeout(() => {
+        localStorage.removeItem('user');
+        window.location.href = 'index.html';
+      }, 1200);
+    }
+
+    (function applyAuthUiState() {
+      let user = null;
+      try {
+        user = JSON.parse(localStorage.getItem('user'));
+      } catch (error) {
+        user = null;
+      }
+
+      const loginButtons = document.querySelectorAll('.btn-login');
+      const logoutButtons = document.querySelectorAll('.btn-logout');
+
+      if (user) {
+        loginButtons.forEach((btn) => {
+          btn.style.display = 'none';
+        });
+        logoutButtons.forEach((btn) => {
+          btn.style.display = 'inline-block';
+        });
+      } else {
+        loginButtons.forEach((btn) => {
+          btn.style.display = 'inline-block';
+        });
+        logoutButtons.forEach((btn) => {
+          btn.style.display = 'none';
+        });
+      }
+
+      if (!user || user.role === 'user') {
+        document
+          .querySelectorAll('a[href="./venue-booking.html"], a[href="venue-booking.html"]')
+          .forEach((link) => {
+            link.style.display = 'none';
+          });
+      }
+    })();
+  </script>
+</body>
+</html>
